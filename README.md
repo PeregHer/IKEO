@@ -7,10 +7,10 @@ Le projet IKEO a été cré par Aude, Jamal, Ludivine et Pereg. Il permet de gé
 ![mcd](images/mcd.png)
 
 ### Modèle logique des données
-![mld](images/mld.png)
+![mld](images/mld.PNG)
 
 ### Dictionnaire des données
-![dictionnaire](images/dictionnaire.png)
+![dictionnaire](images/dictionnaire.PNG)
 
 ## Les interfaces
 ### Tkinter
@@ -19,4 +19,4 @@ Le projet IKEO a été cré par Aude, Jamal, Ludivine et Pereg. Il permet de gé
 
 ### PyQT
 
-![pyqt](images/pyqt.PNG)
+![pyqt](images/pyqt.png)
