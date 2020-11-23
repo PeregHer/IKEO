@@ -1,0 +1,28 @@
+SELECT nom_produit, desc_produit FROM produits;
+
+
+SELECT nom_produit FROM produits WHERE statut_produit = 0;
+
+
+DELETE FROM clients WHERE nom_client= "Bo Meuble" AND ville_client= "Brest";
+
+
+UPDATE produits SET nom_produit = "Apfelgluck" WHERE nom_produit = "Apfelgluk";
+
+
+INSERT INTO clients (type_client, nom_client, adresse_client, ville_client, pays_client) VALUES ("Magasin", "Tout à la maison", "Place Terreaux", "Lyon", 1);
+
+
+INSERT INTO factures (id_facture, date_facture, id_client) VALUES ("MSQ298", "2018-08-28", 9);
+
+INSERT INTO facture_produit (id_facture, id_produit, quantite_produit) VALUES ("MSQ298", "LXAL56", 18);
+
+
+SELECT nom_produit, quantite_produit FROM produits
+JOIN facture_produit ON facture_produit.id_produit = produits.id_produit 
+JOIN factures ON factures.id_facture = facture_produit.id_facture
+JOIN clients ON clients.id_client = factures.id_client
+WHERE clients.nom_client = "Bo Meuble" AND clients.ville_client = "Paris";
+
+
+SELECT id_facture FROM factures WHERE date_facture > "2018-07-01";
