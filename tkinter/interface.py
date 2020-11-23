@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from connexion import Connexion
 from functools import partial
-
+import datetime
 
 color_ids = {'Bleu': '#0051BA', 'Jaune': '#FFDA1A'}
 
@@ -11,7 +11,7 @@ class Interface:
     def __init__(self, master):
         self.master = master
         self.master.title("IKEO")
-        self.master.geometry('900x600')
+        self.master.geometry('1200x600')
         self.master.minsize(900, 600)
         self.master.configure(bg=color_ids['Bleu'])
 
@@ -33,7 +33,7 @@ class Interface:
         self.frame_menu.pack()
 
         fonctions = {'Afficher produits': self.afficher_produits, 'Afficher facture': self.afficher_facture,
-                     'Saisir client': self.saisir_client,  'Afficher sites': self.afficher_sites}
+                     'Saisir client': self.saisir_client,  'Afficher sites': self.afficher_sites, 'Saisir facture': self.saisir_facture}
         for i, (key, value) in enumerate(fonctions.items()):
             ligne = tk.Button(self.frame_boutons, height=2, width=12, bg=color_ids['Jaune'], bd=0, font=(
                 'Helvetica', '12'), text=key, command=value)
@@ -179,3 +179,38 @@ class Interface:
             label = tk.Label(sites_frame, text=value,
                              bg=color_ids['Bleu'], font=('Helvetica', '12'))
             label.grid(row=i, column=1)
+
+    def saisir_facture(self):
+            for widget in self.frame_menu.winfo_children():
+                widget.pack_forget()        
+            
+            def valider():
+                #date du jour                
+                Connexion.saisie_facture(self.entree_date.get(), self.entree_client.get(), self.entree_facture.get(), self.entree_produit.get(), self.entree_quantite.get())
+                        
+            self.entrees_frame = tk.Frame(self.frame_menu, bg=color_ids['Bleu'])
+            self.entrees_frame.pack()
+
+            self.facture_frame = tk.Frame(self.frame_menu, bg=color_ids['Bleu'])
+            self.facture_frame.pack()
+
+            self.entree_facture = ttk.Combobox(self.entrees_frame, values=list(Connexion.lister_factures()), state="normal")
+            self.entree_facture.grid(row = 0 , column = 0, padx=20, pady=30)
+
+            self.entree_client = ttk.Combobox(self.entrees_frame, values=list(Connexion.get_clients()), state="readonly")
+            self.entree_client.grid(row = 0 , column = 1, padx=20, pady=30)
+
+            self.entree_produit = ttk.Combobox(self.entrees_frame, values=list(Connexion.get_produits()), state="readonly")
+            self.entree_produit.grid(row = 0 , column = 2, padx=20, pady=30)
+
+            self.entree_quantite = tk.Entry(self.entrees_frame, bg='white', width=20, justify='center', font=('Helvetica', '10'))
+            self.entree_quantite.grid(row = 0 , column = 3, padx=20, pady=30)
+            
+            self.entree_date = tk.Entry(self.entrees_frame, bg='white', width=20, justify='center', font=('Helvetica', '10'))
+            self.entree_date.grid(row = 0 , column = 4, padx=20, pady=30)
+            self.now = datetime.date.today() 
+            self.date_facture = self.now.strftime("%Y-%m-%d")
+            self.entree_date.insert(0, self.date_facture)
+
+            self.boutton_factures = tk.Button(self.entrees_frame, height=2, width=13, bg=color_ids['Jaune'], bd=0, font=('Helvetica', '11'), text="Valider", command=valider)
+            self.boutton_factures.grid(row = 0 , column = 5, padx=20, pady=30)

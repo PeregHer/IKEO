@@ -94,3 +94,21 @@ class Connexion:
         cls.cursor.execute(SQL)
         cls.link.commit()
         cls.fermer_connexion()
+
+    # saisir factures
+    @classmethod
+    def lister_factures(cls):
+        cls.ouvrir_connexion()
+        cls.cursor.execute("Select id_facture from factures ORDER BY id_facture")
+        factures = cls.cursor.fetchall()
+        cls.fermer_connexion()
+        return factures
+
+    @classmethod
+    def saisie_facture(cls, date, client, facture, produit, quantite):
+        client = client.split(', ')
+        cls.ouvrir_connexion()
+        cls.cursor.execute(f"INSERT INTO factures VALUES ('{facture}', '{date}', (SELECT id_client from clients WHERE nom_client = '{client[0]}' AND ville_client = '{client[1]}'))")
+        cls.cursor.execute(f"INSERT INTO facture_produit VALUES ('{facture}', (SELECT id_produit from produits WHERE nom_produit = '{produit}'), {quantite})")
+        cls.link.commit()
+        cls.fermer_connexion()
